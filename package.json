@@ -5,13 +5,19 @@
   "dependencies": {
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scripts": "3.0.1"
+    "react-scripts": "3.0.1",
+    "tailwindcss": "^1.0.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+  },
+  "scripts": {
+  "tailwind:css":"tailwind build src/css/tailwind.src.css -c  tailwind.js -o src/css/tailwind.css",
+  "start": "npm run tailwind:css && react-scripts start",
+  "build": "npm run tailwind:css && react-scritpts build"
   },
   "eslintConfig": {
     "extends": "react-app"

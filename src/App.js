@@ -1,26 +1,72 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Grid from './components/grid';
+import Instructions from './components/instructions';
+import SweepOrFlag from './components/sweepOrFlag'
+
+const MyContext = React.createContext('hello');
+
+class App extends Component {
+	state = {
+		clickedBomb: false,
+		sweepOrFlag: 'sweep'
+	}
+
+
+
+	sweep = ()=>{
+		this.setState({
+		  sweepOrFlag: 'sweep',
+		})
+	}
+
+	flag = ()=>{
+		this.setState({
+		  sweepOrFlag: 'flag',
+		})
+	}
+
+	//Used to end the game. ClickedBomb is used to define what game is (in return)
+	endGame = () => {
+		this.setState({
+		  clickedBomb: true,
+		});
+	}
+
+	retry = ()=>{
+		this.setState({
+		  clickedBomb: false,
+		});
+	}
+
+	
+	render(){
+		var game;
+		if (!this.state.clickedBomb){
+			game = 
+			<div>
+			<MyContext.Provider value = {this.state.sweepOrFlag}>
+				<SweepOrFlag sweep = {this.sweep} flag = {this.flag}/>
+				<Grid endGame = {this.endGame} sweepOrFlagState = {this.state.sweepOrFlag} renderAgain = {this.state.clickedBomb}/>
+			</MyContext.Provider>
+			</div>
+		}
+		else {
+			game = <div >
+			<p className="text-2xl text-red-800 ">You've lost</p>
+			<button className = "bg-blue-600 text-white mt-3 text-4xl rounded  p-4" onClick = {this.retry}>Try again</button>
+			</div>
+
+
+		}
+	return (
+			<div className="text-center m-8 flex flex-col">
+					<Instructions/>
+					{game}
+			</div>
+		
+		);
+	}
 }
 
 export default App;
